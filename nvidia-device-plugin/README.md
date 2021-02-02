@@ -19,7 +19,7 @@
         ```
     * 필요한 tar파일 다운로드 및 아카이브 해제
         ```bash
-        $ wget -O nvidia-installer.tar https://raw.githubusercontent.com/tmax-cloud/install-nvidia-gpu-infra/${VERSION_NAME}/nvidia-device-plugin/manifest/k8s-gpu-installer-${OS_RELEASE}-v${GPU_INSTALLER_VERSION}.tar
+        $ wget -O nvidia-installer.tar https://raw.githubusercontent.com/tmax-cloud/install-nvidia-gpu-infra/raw/${VERSION_NAME}/nvidia-device-plugin/manifest/k8s-gpu-installer-${OS_RELEASE}-v${GPU_INSTALLER_VERSION}.tar
         $ tar -xzvf nvidia-installer.tar
         ```
 
