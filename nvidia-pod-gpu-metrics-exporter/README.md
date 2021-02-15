@@ -1,8 +1,8 @@
 <!-- # NVIDIA Pod GPU Metrics Exporter 설치 가이드 -->
 
 # 구성 요소 및 버전
-* pod-gpu-metrics-exporter([docker.io/nvidia/pod-gpu-metrics-exporter:v1.0.0-alpha](https://hub.docker.com/layers/nvidia/pod-gpu-metrics-exporter/v1.0.0-alpha/images/sha256-9de3c81507277f7360829a3743760207a79af806b29890de72ab09d28f4db842?context=explore))
-* dcgm-exporter([docker.io/nvidia/dcgm-exporter:1.4.6](https://hub.docker.com/layers/nvidia/dcgm-exporter/1.4.6/images/sha256-1e207db6823484bb2c6746f42f20b7d819da90ab4ee45179726f87adca9d4f1e?context=explore))
+
+* dcgm-exporter([docker.io/nvidia/dcgm-exporter:2.1.4-2.2.0-ubuntu18.04](https://hub.docker.com/layers/nvidia/dcgm-exporter/2.1.4-2.2.0-ubuntu18.04/images/sha256-03d0156f5aba94e9627a185d78f5aff960e2eb6fc012194b3f87349932072360?context=explore))
 
 # Prerequisites
 1. NVIDIA driver가 설치되어있어야 합니다.
@@ -31,24 +31,18 @@
 1. **폐쇄망에서 설치하는 경우** 사용하는 image repository에 NVIDIA Pod GPU Metrics Exporter 설치 시 필요한 이미지를 push한다.
 	```bash
 	$ cd ${EXPORTER_HOME}
-	$ export POD_GPU_METRICS_EXPORTER_VERSION=v1.0.0-alpha
-	$ export DCGM_EXPORTER_VERSION=1.4.6
-	$ docker pull nvidia/pod-gpu-metrics-exporter:${POD_GPU_METRICS_EXPORTER_VERSION}
-	$ docker save nvidia/pod-gpu-metrics-exporter:${POD_GPU_METRICS_EXPORTER_VERSION} > pod-gpu-metrics-exporter_${POD_GPU_METRICS_EXPORTER_VERSION}.tar
+	$ export DCGM_EXPORTER_VERSION=2.1.4-2.2.0-ubuntu18.04
 	$ docker pull nvidia/dcgm-exporter:${DCGM_EXPORTER_VERSION}
 	$ docker save nvidia/dcgm-exporter:${DCGM_EXPORTER_VERSION} > dcgm-exporter_${DCGM_EXPORTER_VERSION}.tar
 	```
 
 2. 위의 과정에서 생성한 tar 파일들을 폐쇄망 환경으로 이동시킨 뒤 사용하려는 registry에 이미지를 push한다.
     ```bash
-    $ docker load < pod-gpu-metrics-exporter_${POD_GPU_METRICS_EXPORTER_VERSION}.tar
 	$ docker load < dcgm-exporter_${DCGM_EXPORTER_VERSION}.tar
 
     # export REGISTRY={registry name}
-    $ docker tag nvidia/pod-gpu-metrics-exporter:${POD_GPU_METRICS_EXPORTER_VERSION} ${REGISTRY}/pod-gpu-metrics-exporter:${POD_GPU_METRICS_EXPORTER_VERSION}
 	$ docker tag nvidia/dcgm-exporter:${DCGM_EXPORTER_VERSION} ${REGISTRY}/dcgm-exporter:${DCGM_EXPORTER_VERSION}
 
-    $ docker push ${REGISTRY}/pod-gpu-metrics-exporter:${POD_GPU_METRICS_EXPORTER_VERSION}
 	$ docker push ${REGISTRY}/dcgm-exporter:${DCGM_EXPORTER_VERSION}
     ```
 
@@ -100,7 +94,7 @@
 * 생성 순서 : 
 	* Exporter로부터 Metric을 확인
 		```bash
-		$ curl -sL http://{Service IP}:9400/gpu/metrics
+		$ curl -sL http://{Service IP}:9400/metrics
 		# HELP DCGM_FI_DEV_SM_CLOCK SM clock frequency (in MHz).
 		# TYPE DCGM_FI_DEV_SM_CLOCK gauge
 		# HELP DCGM_FI_DEV_MEM_CLOCK Memory clock frequency (in MHz).
@@ -169,77 +163,34 @@
 		# TYPE DCGM_FI_DEV_NVLINK_RECOVERY_ERROR_COUNT_TOTAL counter
 		# HELP DCGM_FI_DEV_NVLINK_BANDWIDTH_TOTAL Total number of NVLink bandwidth counters for all lanes
 		# TYPE DCGM_FI_DEV_NVLINK_BANDWIDTH_TOTAL counter
+		# HELP DCGM_FI_DEV_VGPU_LICENSE_STATUS vGPU License status
+		# TYPE DCGM_FI_DEV_VGPU_LICENSE_STATUS gauge
+		# HELP DCGM_FI_DEV_UNCORRECTABLE_REMAPPED_ROWS Number of remapped rows for uncorrectable errors
+		# TYPE DCGM_FI_DEV_UNCORRECTABLE_REMAPPED_ROWS counter
+		# HELP DCGM_FI_DEV_CORRECTABLE_REMAPPED_ROWS Number of remapped rows for correctable errors
+		# TYPE DCGM_FI_DEV_CORRECTABLE_REMAPPED_ROWS counter
+		# HELP DCGM_FI_DEV_ROW_REMAP_FAILURE Whether remapping of rows has failed
+		# TYPE DCGM_FI_DEV_ROW_REMAP_FAILURE gauge
 
 
-		DCGM_FI_DEV_SM_CLOCK{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 139
-		DCGM_FI_DEV_MEM_CLOCK{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 405
-		DCGM_FI_DEV_MEMORY_TEMP{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 9223372036854775794
-		DCGM_FI_DEV_GPU_TEMP{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 36
-		DCGM_FI_DEV_POWER_USAGE{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 7.544000
-		DCGM_FI_DEV_TOTAL_ENERGY_CONSUMPTION{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 15347724978
-		DCGM_FI_DEV_PCIE_TX_THROUGHPUT{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 8599590
-		DCGM_FI_DEV_PCIE_RX_THROUGHPUT{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 4240405
-		DCGM_FI_DEV_PCIE_REPLAY_COUNTER{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 0
-		DCGM_FI_DEV_GPU_UTIL{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 0
-		DCGM_FI_DEV_MEM_COPY_UTIL{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 0
-		DCGM_FI_DEV_ENC_UTIL{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 0
-		DCGM_FI_DEV_DEC_UTIL{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 0
-		DCGM_FI_DEV_XID_ERRORS{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 0
-		DCGM_FI_DEV_POWER_VIOLATION{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 0
-		DCGM_FI_DEV_THERMAL_VIOLATION{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 0
-		DCGM_FI_DEV_SYNC_BOOST_VIOLATION{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 0
-		DCGM_FI_DEV_BOARD_LIMIT_VIOLATION{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 9223372036854775794
-		DCGM_FI_DEV_LOW_UTIL_VIOLATION{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 9223372036854775794
-		DCGM_FI_DEV_RELIABILITY_VIOLATION{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 9223372036854775794
-		DCGM_FI_DEV_FB_FREE{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 5057
-		DCGM_FI_DEV_FB_USED{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 0
-		DCGM_FI_DEV_ECC_SBE_VOL_TOTAL{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 9223372036854775794
-		DCGM_FI_DEV_ECC_DBE_VOL_TOTAL{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 9223372036854775794
-		DCGM_FI_DEV_ECC_SBE_AGG_TOTAL{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 9223372036854775794
-		DCGM_FI_DEV_ECC_DBE_AGG_TOTAL{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 9223372036854775794
-		DCGM_FI_DEV_RETIRED_SBE{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 9223372036854775794
-		DCGM_FI_DEV_RETIRED_DBE{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 9223372036854775794
-		DCGM_FI_DEV_RETIRED_PENDING{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 9223372036854775794
-		DCGM_FI_DEV_NVLINK_CRC_FLIT_ERROR_COUNT_TOTAL{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 9223372036854775794
-		DCGM_FI_DEV_NVLINK_CRC_DATA_ERROR_COUNT_TOTAL{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 9223372036854775794
-		DCGM_FI_DEV_NVLINK_REPLAY_ERROR_COUNT_TOTAL{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 9223372036854775794
-		DCGM_FI_DEV_NVLINK_RECOVERY_ERROR_COUNT_TOTAL{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 9223372036854775794
-		DCGM_FI_DEV_NVLINK_BANDWIDTH_TOTAL{gpu="0", UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",container="",namespace="",pod=""} 9223372036854775794
-
-		DCGM_FI_DEV_SM_CLOCK{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 139
-		DCGM_FI_DEV_MEM_CLOCK{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 405
-		DCGM_FI_DEV_MEMORY_TEMP{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 9223372036854775794
-		DCGM_FI_DEV_GPU_TEMP{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 31
-		DCGM_FI_DEV_POWER_USAGE{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 4.818000
-		DCGM_FI_DEV_TOTAL_ENERGY_CONSUMPTION{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 9937726316
-		DCGM_FI_DEV_PCIE_TX_THROUGHPUT{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 10728857
-		DCGM_FI_DEV_PCIE_RX_THROUGHPUT{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 6334413
-		DCGM_FI_DEV_PCIE_REPLAY_COUNTER{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 0
-		DCGM_FI_DEV_GPU_UTIL{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 0
-		DCGM_FI_DEV_MEM_COPY_UTIL{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 0
-		DCGM_FI_DEV_ENC_UTIL{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 0
-		DCGM_FI_DEV_DEC_UTIL{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 0
-		DCGM_FI_DEV_XID_ERRORS{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 0
-		DCGM_FI_DEV_POWER_VIOLATION{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 0
-		DCGM_FI_DEV_THERMAL_VIOLATION{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 0
-		DCGM_FI_DEV_SYNC_BOOST_VIOLATION{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 0
-		DCGM_FI_DEV_BOARD_LIMIT_VIOLATION{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 9223372036854775794
-		DCGM_FI_DEV_LOW_UTIL_VIOLATION{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 9223372036854775794
-		DCGM_FI_DEV_RELIABILITY_VIOLATION{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 9223372036854775794
-		DCGM_FI_DEV_FB_FREE{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 5059
-		DCGM_FI_DEV_FB_USED{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 0
-		DCGM_FI_DEV_ECC_SBE_VOL_TOTAL{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 9223372036854775794
-		DCGM_FI_DEV_ECC_DBE_VOL_TOTAL{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 9223372036854775794
-		DCGM_FI_DEV_ECC_SBE_AGG_TOTAL{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 9223372036854775794
-		DCGM_FI_DEV_ECC_DBE_AGG_TOTAL{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 9223372036854775794
-		DCGM_FI_DEV_RETIRED_SBE{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 9223372036854775794
-		DCGM_FI_DEV_RETIRED_DBE{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 9223372036854775794
-		DCGM_FI_DEV_RETIRED_PENDING{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 9223372036854775794
-		DCGM_FI_DEV_NVLINK_CRC_FLIT_ERROR_COUNT_TOTAL{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 9223372036854775794
-		DCGM_FI_DEV_NVLINK_CRC_DATA_ERROR_COUNT_TOTAL{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 9223372036854775794
-		DCGM_FI_DEV_NVLINK_REPLAY_ERROR_COUNT_TOTAL{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 9223372036854775794
-		DCGM_FI_DEV_NVLINK_RECOVERY_ERROR_COUNT_TOTAL{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 9223372036854775794
-		DCGM_FI_DEV_NVLINK_BANDWIDTH_TOTAL{gpu="1", UUID="GPU-fbe0b676-9b79-be59-aad5-7e7560a23b26",container="test1",namespace="default",pod="gpu-rs-joo-m4z6t"} 9223372036854775794
+		DCGM_FI_DEV_SM_CLOCK{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 139
+		DCGM_FI_DEV_MEM_CLOCK{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 405
+		DCGM_FI_DEV_GPU_TEMP{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 32
+		DCGM_FI_DEV_POWER_USAGE{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 5.208000
+		DCGM_FI_DEV_TOTAL_ENERGY_CONSUMPTION{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 7299606661
+		DCGM_FI_DEV_PCIE_REPLAY_COUNTER{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 0
+		DCGM_FI_DEV_GPU_UTIL{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 0
+		DCGM_FI_DEV_MEM_COPY_UTIL{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 0
+		DCGM_FI_DEV_ENC_UTIL{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 0
+		DCGM_FI_DEV_DEC_UTIL{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 0
+		DCGM_FI_DEV_XID_ERRORS{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 0
+		DCGM_FI_DEV_POWER_VIOLATION{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 0
+		DCGM_FI_DEV_THERMAL_VIOLATION{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 0
+		DCGM_FI_DEV_SYNC_BOOST_VIOLATION{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 0
+		DCGM_FI_DEV_FB_FREE{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 5059
+		DCGM_FI_DEV_FB_USED{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 0
+		DCGM_FI_DEV_NVLINK_BANDWIDTH_TOTAL{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 0
+		DCGM_FI_DEV_VGPU_LICENSE_STATUS{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 0
 		```
 
 # 삭제 가이드
