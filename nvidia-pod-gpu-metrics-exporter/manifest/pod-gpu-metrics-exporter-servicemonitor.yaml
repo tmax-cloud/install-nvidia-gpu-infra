@@ -9,7 +9,7 @@ spec:
   endpoints:
   - interval: 15s
     port: metric
-    path: /gpu/metrics
+    path: /metrics
   selector:
     matchLabels:
       k8s-app: pod-gpu-metrics-exporter
