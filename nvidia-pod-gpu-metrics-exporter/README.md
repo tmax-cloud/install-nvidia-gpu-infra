@@ -173,24 +173,24 @@
 		# TYPE DCGM_FI_DEV_ROW_REMAP_FAILURE gauge
 
 
-		DCGM_FI_DEV_SM_CLOCK{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 139
-		DCGM_FI_DEV_MEM_CLOCK{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 405
-		DCGM_FI_DEV_GPU_TEMP{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 32
-		DCGM_FI_DEV_POWER_USAGE{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 5.208000
-		DCGM_FI_DEV_TOTAL_ENERGY_CONSUMPTION{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 7299606661
-		DCGM_FI_DEV_PCIE_REPLAY_COUNTER{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 0
-		DCGM_FI_DEV_GPU_UTIL{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 0
-		DCGM_FI_DEV_MEM_COPY_UTIL{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 0
-		DCGM_FI_DEV_ENC_UTIL{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 0
-		DCGM_FI_DEV_DEC_UTIL{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 0
-		DCGM_FI_DEV_XID_ERRORS{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 0
-		DCGM_FI_DEV_POWER_VIOLATION{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 0
-		DCGM_FI_DEV_THERMAL_VIOLATION{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 0
-		DCGM_FI_DEV_SYNC_BOOST_VIOLATION{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 0
-		DCGM_FI_DEV_FB_FREE{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 5059
-		DCGM_FI_DEV_FB_USED{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 0
-		DCGM_FI_DEV_NVLINK_BANDWIDTH_TOTAL{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 0
-		DCGM_FI_DEV_VGPU_LICENSE_STATUS{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0"} 0
+		DCGM_FI_DEV_SM_CLOCK{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0",container="ubuntu",namespace="default",pod="ubuntu-gpu-sunny"} 139
+		DCGM_FI_DEV_MEM_CLOCK{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0",container="ubuntu",namespace="default",pod="ubuntu-gpu-sunny"} 405
+		DCGM_FI_DEV_GPU_TEMP{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0",container="ubuntu",namespace="default",pod="ubuntu-gpu-sunny"} 32
+		DCGM_FI_DEV_POWER_USAGE{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0",container="ubuntu",namespace="default",pod="ubuntu-gpu-sunny"} 5.208000
+		DCGM_FI_DEV_TOTAL_ENERGY_CONSUMPTION{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0",container="ubuntu",namespace="default",pod="ubuntu-gpu-sunny"} 7324985680
+		DCGM_FI_DEV_PCIE_REPLAY_COUNTER{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0",container="ubuntu",namespace="default",pod="ubuntu-gpu-sunny"} 0
+		DCGM_FI_DEV_GPU_UTIL{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0",container="ubuntu",namespace="default",pod="ubuntu-gpu-sunny"} 0
+		DCGM_FI_DEV_MEM_COPY_UTIL{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0",container="ubuntu",namespace="default",pod="ubuntu-gpu-sunny"} 0
+		DCGM_FI_DEV_ENC_UTIL{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0",container="ubuntu",namespace="default",pod="ubuntu-gpu-sunny"} 0
+		DCGM_FI_DEV_DEC_UTIL{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0",container="ubuntu",namespace="default",pod="ubuntu-gpu-sunny"} 0
+		DCGM_FI_DEV_XID_ERRORS{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0",container="ubuntu",namespace="default",pod="ubuntu-gpu-sunny"} 0
+		DCGM_FI_DEV_POWER_VIOLATION{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0",container="ubuntu",namespace="default",pod="ubuntu-gpu-sunny"} 0
+		DCGM_FI_DEV_THERMAL_VIOLATION{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0",container="ubuntu",namespace="default",pod="ubuntu-gpu-sunny"} 0
+		DCGM_FI_DEV_SYNC_BOOST_VIOLATION{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0",container="ubuntu",namespace="default",pod="ubuntu-gpu-sunny"} 0
+		DCGM_FI_DEV_FB_FREE{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0",container="ubuntu",namespace="default",pod="ubuntu-gpu-sunny"} 5059
+		DCGM_FI_DEV_FB_USED{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0",container="ubuntu",namespace="default",pod="ubuntu-gpu-sunny"} 0
+		DCGM_FI_DEV_NVLINK_BANDWIDTH_TOTAL{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0",container="ubuntu",namespace="default",pod="ubuntu-gpu-sunny"} 0
+		DCGM_FI_DEV_VGPU_LICENSE_STATUS{gpu="0",UUID="GPU-c0b5694b-2b5d-6b20-f903-558341437f6b",device="nvidia0",container="ubuntu",namespace="default",pod="ubuntu-gpu-sunny"} 0
 		```
 
 # 삭제 가이드
