@@ -21,9 +21,9 @@
 	* 필요한 yaml을 다운로드 합니다.
 		```bash
 		$ export VERSION_NAME=main # main 혹은 4.1 등 설치를 위한 version(git branch 명)을 사용
-		$ wget https://raw.githubusercontent.com/tmax-cloud/install-nvidia-gpu-infra/raw/${VERSION_NAME}/nvidia-pod-gpu-metrics-exporter/manifest/pod-gpu-metrics-exporter-daemonset.yaml
-		$ wget https://raw.githubusercontent.com/tmax-cloud/install-nvidia-gpu-infra/raw/${VERSION_NAME}/nvidia-pod-gpu-metrics-exporter/manifest/pod-gpu-metrics-exporter-service.yaml
-		$ wget https://raw.githubusercontent.com/tmax-cloud/install-nvidia-gpu-infra/raw/${VERSION_NAME}/nvidia-pod-gpu-metrics-exporter/manifest/pod-gpu-metrics-exporter-servicemonitor.yaml
+		$ wget https://raw.githubusercontent.com/tmax-cloud/install-nvidia-gpu-infra/${VERSION_NAME}/nvidia-pod-gpu-metrics-exporter/manifest/pod-gpu-metrics-exporter-daemonset.yaml
+		$ wget https://raw.githubusercontent.com/tmax-cloud/install-nvidia-gpu-infra/${VERSION_NAME}/nvidia-pod-gpu-metrics-exporter/manifest/pod-gpu-metrics-exporter-service.yaml
+		$ wget https://raw.githubusercontent.com/tmax-cloud/install-nvidia-gpu-infra/${VERSION_NAME}/nvidia-pod-gpu-metrics-exporter/manifest/pod-gpu-metrics-exporter-servicemonitor.yaml
 		```
 
 # 폐쇄망 구축 가이드
