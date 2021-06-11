@@ -32,18 +32,18 @@
 	```bash
 	$ cd ${EXPORTER_HOME}
 	$ export DCGM_EXPORTER_VERSION=2.1.4-2.2.0-ubuntu18.04
-	$ docker pull nvidia/dcgm-exporter:${DCGM_EXPORTER_VERSION}
-	$ docker save nvidia/dcgm-exporter:${DCGM_EXPORTER_VERSION} > dcgm-exporter_${DCGM_EXPORTER_VERSION}.tar
+	$ sudo docker pull nvidia/dcgm-exporter:${DCGM_EXPORTER_VERSION}
+	$ sudo docker save nvidia/dcgm-exporter:${DCGM_EXPORTER_VERSION} > dcgm-exporter_${DCGM_EXPORTER_VERSION}.tar
 	```
 
 2. 위의 과정에서 생성한 tar 파일들을 폐쇄망 환경으로 이동시킨 뒤 사용하려는 registry에 이미지를 push한다.
     ```bash
-	$ docker load < dcgm-exporter_${DCGM_EXPORTER_VERSION}.tar
+	$ sudo docker load < dcgm-exporter_${DCGM_EXPORTER_VERSION}.tar
 
     # export REGISTRY={registry name}
-	$ docker tag nvidia/dcgm-exporter:${DCGM_EXPORTER_VERSION} ${REGISTRY}/dcgm-exporter:${DCGM_EXPORTER_VERSION}
+	$ sudo docker tag nvidia/dcgm-exporter:${DCGM_EXPORTER_VERSION} ${REGISTRY}/dcgm-exporter:${DCGM_EXPORTER_VERSION}
 
-	$ docker push ${REGISTRY}/dcgm-exporter:${DCGM_EXPORTER_VERSION}
+	$ sudo docker push ${REGISTRY}/dcgm-exporter:${DCGM_EXPORTER_VERSION}
     ```
 
 # 설치 가이드
@@ -68,7 +68,7 @@
     * `폐쇄망에서 설치를 진행하여 별도의 image registry를 사용하는 경우 registry 정보를 추가로 설정해준다.`
         ```bash
         $ cd ${EXPORTER_HOME}
-        $ sed -i 's/nvidia\/pod-gpu-metrics-exporter/'${REGISTRY}'\/pod-gpu-metrics-exporter/g' pod-gpu-metrics-exporter-daemonset.yaml
+        $ sed -i 's/nvidia\/dcgm-exporter/'${REGISTRY}'\/dcgm-exporter/g' pod-gpu-metrics-exporter-daemonset.yaml
         ```
 
 ## Step 2. GPU Metrics Exporter Service 배포
