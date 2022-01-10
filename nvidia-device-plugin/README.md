@@ -20,7 +20,7 @@
     * 필요한 tar파일 다운로드 및 아카이브 해제
         ```bash
         $ wget -O nvidia-installer.tar https://github.com/tmax-cloud/install-nvidia-gpu-infra/blob/${VERSION_NAME}/nvidia-device-plugin/manifest/k8s-gpu-installer-${OS_RELEASE}-v${GPU_INSTALLER_VERSION}.tar?raw=true
-        $ tar -xzvf nvidia-installer.tar
+        $ tar -xvf nvidia-installer.tar
         ```
 
 # 폐쇄망 구축 가이드
@@ -28,18 +28,18 @@
 1. **폐쇄망에서 설치하는 경우** 사용하는 image repository에 NVIDIA Device Plugin 설치 시 필요한 이미지를 push한다.
     ```bash
     $ export NVIDIA_PLUGIN_VERSION=1.0.0-beta4
-    $ docker pull nvidia/k8s-device-plugin:${NVIDIA_PLUGIN_VERSION}
-    $ docker save nvidia/k8s-device-plugin:${NVIDIA_PLUGIN_VERSION} > k8s-device-plugin_${NVIDIA_PLUGIN_VERSION}.tar
+    $ sudo docker pull nvidia/k8s-device-plugin:${NVIDIA_PLUGIN_VERSION}
+    $ sudo docker save nvidia/k8s-device-plugin:${NVIDIA_PLUGIN_VERSION} > k8s-device-plugin_${NVIDIA_PLUGIN_VERSION}.tar
     ```
 
 2. 위의 과정에서 생성한 tar 파일들을 폐쇄망 환경으로 이동시킨 뒤 사용하려는 registry에 이미지를 push한다.
     ```bash
-    $ docker load < k8s-device-plugin_${NVIDIA_PLUGIN_VERSION}.tar
+    $ sudo docker load < k8s-device-plugin_${NVIDIA_PLUGIN_VERSION}.tar
 
     # export REGISTRY={registry name}
-    $ docker tag nvidia/k8s-device-plugin:${NVIDIA_PLUGIN_VERSION} ${REGISTRY}/k8s-device-plugin:${NVIDIA_PLUGIN_VERSION}
+    $ sudo docker tag nvidia/k8s-device-plugin:${NVIDIA_PLUGIN_VERSION} ${REGISTRY}/k8s-device-plugin:${NVIDIA_PLUGIN_VERSION}
 
-    $ docker push ${REGISTRY}/k8s-device-plugin:${NVIDIA_PLUGIN_VERSION}
+    $ sudo docker push ${REGISTRY}/k8s-device-plugin:${NVIDIA_PLUGIN_VERSION}
     ```
 
 # 설치 가이드
@@ -56,20 +56,21 @@
         # write the following to the file:
         blacklist nouveau
         options nouveau modeset=0
+        sudo dracut --force
         ```
     * 재부팅
         ```bash
-        $ reboot
+        $ sudo reboot
         ```
     * 필요한 패키지 설치
         ```bash
         $ KERNEL_RELEASE=`uname -r | sed "s/.\`uname -m\`//g"`
-        $ yum -y install kernel-devel-${KERNEL_RELEASE} kernel-headers-${KERNEL_RELEASE} gcc make dkms jq
+        $ sudo yum -y install kernel-devel-${KERNEL_RELEASE} kernel-headers-${KERNEL_RELEASE} gcc make dkms jq
         ```
     * [nvidia 홈페이지](https://www.nvidia.co.kr/Download/index.aspx)에서 GPU device에 적절한 nvidia driver를 다운받아 설치
         ```bash
         $ chmod +x ./your-nvidia-file.run
-        $ ./your-nvidia-file.run --dkms -s
+        $ sudo ./your-nvidia-file.run --dkms -s
         ```
     * nvidia driver가 설치되었는지 확인
         ```bash
@@ -86,12 +87,12 @@
     $ # Nvidia GPU Driver install 파일 준비 (run파일)
     $ chmod +x ./{your-nvidia-file.run}
     $ ./{your-nvidia-file.run} --uninstall
-    $ reboot
+    $ sudo reboot
     ```
 - Step 3: Nvidia GPU Driver 재설치 후 확인
     ```bash
     $ chmod +x ./{your-nvidia-file.run}
-    $ ./{your-nvidia-file.run} --dkms -s
+    $ sudo ./{your-nvidia-file.run} --dkms -s
     ```
 - Step 4: Nvidia Device Plugin 재 설치
     ```bash
@@ -112,11 +113,16 @@
 * 목적 : `nvidia-container-toolkit을 설치`
 * 생성 순서 : 
     * nvidia-container-toolkit을 설치
+    * (외부망)
         ```bash
         $ distribution=$(. /etc/os-release;echo $ID$VERSION_ID)
         $ curl -s -L https://nvidia.github.io/nvidia-docker/$distribution/nvidia-docker.repo | sudo tee /etc/yum.repos.d/nvidia-docker.repo
-        $ yum install -y nvidia-container-toolkit
+        $ sudo yum install -y nvidia-container-toolkit-1.4.2
         ```
+    * (폐쇄망)
+        ```bash
+        $ sudo yum install -y nvidia-container-toolkit-1.4.2
+
 
 ## For master node
 
@@ -146,7 +152,7 @@
 * 비고 :
     * `폐쇄망에서 설치를 진행하여 별도의 image registry를 사용하는 경우 registry 정보를 추가로 설정해준다.`
         ```bash
-        $ cd cd ${INSTALLER_HOME}
+        $ cd ${INSTALLER_HOME}
         $ sed -i 's/nvidia\/k8s-device-plugin/'${REGISTRY}'\/k8s-device-plugin/g' nvidia-device-plugin-daemonset.yml
         ```
 
