@@ -3,6 +3,8 @@
 # 구성 요소 및 버전
 * nvidia gpu device plugin([docker.io/nvidia/k8s-device-plugin:1.0.0-beta4](https://hub.docker.com/layers/nvidia/k8s-device-plugin/1.0.0-beta4/images/sha256-76c08ab2780e88142384c6d9da48dae1788555273a5429a3eb67ed68a9bc358a?context=explore))
 * Nvidia Driver 버전 요구사항: `361.93 이상`
+* nvidia-docker2
+* nvidia-container-toolkit:v1.4.2
 
 # Prerequisites
 설치를 진행하기 전 아래의 과정을 통해 필요한 tar 파일을 준비한다.
@@ -122,7 +124,6 @@
     * (폐쇄망)
         ```bash
         $ sudo yum install -y nvidia-container-toolkit-1.4.2
-
 
 ## For master node
 
